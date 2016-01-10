@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{CBE2AF02-7434-A95D-96E5-D54FDD780250}") = "Eternal Empire", "Assembly-CSharp.csproj", "{BDCB3ACB-2657-312E-9E12-715C6B28DD23}"
+EndProject
+Project("{CBE2AF02-7434-A95D-96E5-D54FDD780250}") = "Eternal Empire", "Assembly-CSharp-Editor.csproj", "{AB3623A5-7443-1FF0-E703-22122B55E4A1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BDCB3ACB-2657-312E-9E12-715C6B28DD23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDCB3ACB-2657-312E-9E12-715C6B28DD23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDCB3ACB-2657-312E-9E12-715C6B28DD23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDCB3ACB-2657-312E-9E12-715C6B28DD23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB3623A5-7443-1FF0-E703-22122B55E4A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB3623A5-7443-1FF0-E703-22122B55E4A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB3623A5-7443-1FF0-E703-22122B55E4A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB3623A5-7443-1FF0-E703-22122B55E4A1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
