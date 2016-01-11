@@ -47,8 +47,9 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\MenuButton.cs" />
-     <Compile Include="Assets\Scripts\Resource.cs" />
+     <Compile Include="Assets\Scripts\PlayerPrefs2.cs" />
      <Compile Include="Assets\Scripts\Unit.cs" />
+     <Compile Include="Assets\Scripts\Upgrade.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
