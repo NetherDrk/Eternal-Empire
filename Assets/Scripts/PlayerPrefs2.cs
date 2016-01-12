@@ -3,7 +3,7 @@ using System.Collections;
 
 public static class PlayerPrefs2 {
 
-	// Set e Get Double
+	// Set and Get Double
 
 	public static void SetDouble(string key, double value)
 	{
@@ -27,7 +27,7 @@ public static class PlayerPrefs2 {
 		return double.Parse(target);
 	}
 
-	// Set e Get Ulong
+	// Set and Get Ulong
 
 	public static void SetUlong(string key, ulong value)
 	{
@@ -50,7 +50,7 @@ public static class PlayerPrefs2 {
 		return ulong.Parse(target);
 	}
 
-	// Set e Get Bool
+	// Set and Get Bool
 	public static void SetBool(string name, bool booleanValue) 
 	{
 		PlayerPrefs.SetInt(name, booleanValue ? 1 : 0);

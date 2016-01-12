@@ -6,15 +6,24 @@ public class Upgrade : MonoBehaviour {
 
 	private GameManager gameManager;
 	public enum UpgradeType {unitUnlock, unitUpgrade, unitTechUpgrade, techUnlock};
+
+	[Header ("Type of Upgrade")]
 	public UpgradeType upgradeType;
+	[Header("Game Objects")]
 	public GameObject upgradeButton;
 	public Button buyButton;
 	public Upgrade[] upgradesToUnlock;
 	public Upgrade[] upgradesUnlocked;
-	public ulong techLevel;
+
+	[Header ("If Units Upgrades or Unlock")]
 	public Unit unitUpgraded;
+
+	[Header ("If Units Upgrades(Not Unlock)")]
 	public double multiplyFactor;
+
+	[Header ("Upgrade Cost")]
 	public double cost;
+
 	[HideInInspector]
 	public bool upgradeBought;
 
@@ -61,7 +70,7 @@ public class Upgrade : MonoBehaviour {
 	public void buyUpgrade() {
 		switch (upgradeType) {
 		case UpgradeType.techUnlock:
-			gameManager.techUnlock (techLevel);
+			gameManager.techUnlock ();
 			break;
 		case UpgradeType.unitUnlock:
 			unitUpgraded.unitUnlock ();

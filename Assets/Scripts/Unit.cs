@@ -6,17 +6,19 @@ public class Unit : MonoBehaviour {
 
 	private GameManager gameManager;
 
+	[Header("Game Objects")]
 	public GameObject unitButton;
-
+	public Image unitImage;
 	public Text unitNameText;
 	public Text unitResourceText;
 	public Text unitCostText;
-
 	public Button buyButton;
 
+	[Header("Names and Sprites in each Tech Level")]
 	public string[] unitNames;
-	public Image[] unitImages;
-
+	public Sprite[] unitSprites;
+	
+	[Header("Initial Values")]
 	public ulong baseAmount;
 	public ulong baseTechLevel;
 	public double baseCost;
@@ -72,6 +74,7 @@ public class Unit : MonoBehaviour {
 
 	public void unitTechUpgrade(double multiplyFactor) {
 		techLevel++;
+		unitImage.sprite = unitSprites [techLevel];
 		unitUpgrade (multiplyFactor);
 	}
 
@@ -82,6 +85,7 @@ public class Unit : MonoBehaviour {
 		resourcePerSecondPerUnit = PlayerPrefs2.GetDouble (addName("ResourcePerSecondPerUnit"), baseResourcePerSecondPerUnit);
 		unitUnlocked = PlayerPrefs2.GetBool (addName ("Unlocked"), false);
 		unitButton.SetActive (unitUnlocked);
+		unitImage.sprite = unitSprites [techLevel];
 	}
 
 	void refreshText() {
