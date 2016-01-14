@@ -36,6 +36,9 @@ public class Upgrade : MonoBehaviour {
 		if (checkUnlock()) {
 			upgradeButton.GetComponent<Button> ().interactable = !upgradeBought;
 		}
+		if (upgradeBought) {
+			UpgradeUnit ();
+		}
 	}
 
 	void Update () {
@@ -68,6 +71,17 @@ public class Upgrade : MonoBehaviour {
 	}
 
 	public void buyUpgrade() {
+		UpgradeUnit ();
+		gameManager.resourcesAmount -= cost;
+		upgradeBought = true;
+		upgradeButton.GetComponent<Button> ().interactable = !upgradeBought;
+		for (int i = 0; i < upgradesUnlocked.Length; i++) {
+			upgradesUnlocked [i].checkUnlock ();
+		}
+		PlayerPrefs2.SetBool (addName("Bought"), upgradeBought);
+	}
+
+	public void UpgradeUnit() {
 		switch (upgradeType) {
 		case UpgradeType.techUnlock:
 			gameManager.techUnlock ();
@@ -82,12 +96,5 @@ public class Upgrade : MonoBehaviour {
 			unitUpgraded.unitTechUpgrade (multiplyFactor);
 			break;
 		}
-		gameManager.resourcesAmount -= cost;
-		upgradeBought = true;
-		upgradeButton.GetComponent<Button> ().interactable = !upgradeBought;
-		for (int i = 0; i < upgradesUnlocked.Length; i++) {
-			upgradesUnlocked [i].checkUnlock ();
-		}
-		PlayerPrefs2.SetBool (addName("Bought"), upgradeBought);
 	}
 }

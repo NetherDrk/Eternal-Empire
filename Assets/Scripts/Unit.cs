@@ -19,24 +19,16 @@ public class Unit : MonoBehaviour {
 	public Sprite[] unitSprites;
 	
 	[Header("Initial Values")]
-	public ulong baseAmount;
-	public ulong baseTechLevel;
 	public double baseCost;
-	public double costGrowth;
-	public double baseResourcePerSecondPerUnit;
-
-	[HideInInspector]
-	public ulong amount;
-	[HideInInspector]
+	public float costGrowth;
+	public double resourcePerSecondPerUnit;
 	public ulong techLevel;
+	public ulong amount;
+	public bool unitUnlocked;
 	[HideInInspector]
 	public double cost;
 	[HideInInspector]
-	public double resourcePerSecondPerUnit;
-	[HideInInspector]
 	public double totalResourcePerSecond;
-	[HideInInspector]
-	public bool unitUnlocked;
 
 	void Start () {
 		gameManager = GameObject.Find ("GameManager").GetComponent<GameManager> ();
@@ -79,17 +71,14 @@ public class Unit : MonoBehaviour {
 	}
 
 	void refreshLoad() {
-		amount = PlayerPrefs2.GetUlong (addName("Amount"), baseAmount); 
-		techLevel = PlayerPrefs2.GetUlong (addName("TechLevel"), baseTechLevel);
-		cost = PlayerPrefs2.GetDouble (addName("Cost"), baseCost);
-		resourcePerSecondPerUnit = PlayerPrefs2.GetDouble (addName("ResourcePerSecondPerUnit"), baseResourcePerSecondPerUnit);
-		unitUnlocked = PlayerPrefs2.GetBool (addName ("Unlocked"), false);
+		amount = PlayerPrefs2.GetUlong (addName("Amount"), 0); 
 		unitButton.SetActive (unitUnlocked);
 		unitImage.sprite = unitSprites [techLevel];
 	}
 
 	void refreshText() {
 		totalResourcePerSecond = resourcePerSecondPerUnit * amount;
+		cost = baseCost * Mathf.Pow (costGrowth, amount);
 		unitNameText.text = unitNames [techLevel] + " - " + gameManager.numberRound (amount);
 		unitResourceText.text = "R/sec: " + gameManager.numberRound (totalResourcePerSecond);
 		unitCostText.text = "Cost: " + gameManager.numberRound (cost);
@@ -97,10 +86,6 @@ public class Unit : MonoBehaviour {
 
 	void refreshSave() {
 		PlayerPrefs2.SetUlong (addName("Amount"), amount);
-		PlayerPrefs2.SetUlong (addName("TechLevel"), techLevel);
-		PlayerPrefs2.SetDouble (addName("Cost"), cost);
-		PlayerPrefs2.SetDouble (addName("ResourcePerSecondPerUnit"), resourcePerSecondPerUnit);
-		PlayerPrefs2.SetBool (addName ("Unlocked"), unitUnlocked);
 	}
 
 	public void fullRefresh() {
