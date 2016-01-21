@@ -24,7 +24,6 @@ public class Unit : MonoBehaviour {
 	public double resourcePerSecondPerUnit;
 	public ulong techLevel;
 	public ulong amount;
-	public bool unitUnlocked;
 	[HideInInspector]
 	public double cost;
 	[HideInInspector]
@@ -38,6 +37,8 @@ public class Unit : MonoBehaviour {
 	
 	void Update () {
 		gameManager.resourcesAmount += totalResourcePerSecond * Time.deltaTime;
+		gameManager.resourcesCollected += totalResourcePerSecond * Time.deltaTime;
+
 		if (buyButton.interactable) {
 			if (gameManager.resourcesAmount < cost) {
 				buyButton.interactable = false;
@@ -54,8 +55,7 @@ public class Unit : MonoBehaviour {
 	}
 
 	public void unitUnlock() {
-		unitUnlocked = true;
-		unitButton.SetActive (unitUnlocked);
+		unitButton.SetActive (true);
 		fullRefresh ();
 	}
 
@@ -72,7 +72,6 @@ public class Unit : MonoBehaviour {
 
 	void refreshLoad() {
 		amount = PlayerPrefs2.GetUlong (addName("Amount"), 0); 
-		unitButton.SetActive (unitUnlocked);
 		unitImage.sprite = unitSprites [techLevel];
 	}
 

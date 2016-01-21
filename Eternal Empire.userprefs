@@ -1,13 +1,38 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Upgrade.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GameManager.cs">
     <Files>
-      <File FileName="Assets\Scripts\Unit.cs" Line="84" Column="33" />
+      <File FileName="Assets\Scripts\Unit.cs" Line="41" Column="3" />
       <File FileName="Assets\Scripts\MenuButton.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GameManager.cs" Line="25" Column="27" />
-      <File FileName="Assets\Scripts\Upgrade.cs" Line="32" Column="3" />
-      <File FileName="Assets\Scripts\PlayerPrefs2.cs" Line="18" Column="53" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="79" Column="24" />
+      <File FileName="Assets\Scripts\PlayerPrefs2.cs" Line="5" Column="2" />
+      <File FileName="Assets\Scripts\Tech.cs" Line="35" Column="16" />
+      <File FileName="Assets\Scripts\TechUnitTechUpgrade.cs" Line="8" Column="27" />
+      <File FileName="Assets\Scripts\TechUnitUpgrade.cs" Line="7" Column="26" />
+      <File FileName="Assets\Scripts\TechUnitUnlock.cs" Line="9" Column="2" />
+      <File FileName="Assets\Scripts\TechLevelUnlock.cs" Line="10" Column="2" />
     </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Eternal Empire" expanded="True">
+            <Node name="Assembly-CSharp" expanded="True">
+              <Node name="Scripts" expanded="True">
+                <Node name="GameManager.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State name="__root__">
+          <Node name="Eternal Empire" expanded="True" selected="True" />
+        </State>
+      </Pad>
+    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
