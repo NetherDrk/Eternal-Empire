@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Assets.Plugins
 {
@@ -19,35 +20,39 @@ namespace Assets.Plugins
         {
             get
             {
-                if (_applicationIsQuitting) {
-                    Debug.LogWarning("[Singleton] Instance '"+ typeof(T) +
+                if (_applicationIsQuitting)
+                {
+                    Debug.LogWarning("[Singleton] Instance '" + typeof(T) +
                                      "' already destroyed on application quit." +
                                      " Won't create again - returning null.");
                     return null;
                 }
 
-                lock(Lock)
+                lock (Lock)
                 {
                     if (_instance != null) return _instance;
-                    _instance = (T) FindObjectOfType(typeof(T));
+                    _instance = (T)FindObjectOfType(typeof(T));
 
-                    if ( FindObjectsOfType(typeof(T)).Length > 1 )
+                    if (FindObjectsOfType(typeof(T)).Length > 1)
                     {
                         Debug.LogError("[Singleton] Something went really wrong " +
                                        " - there should never be more than 1 singleton!" +
                                        " Reopening the scene might fix it.");
                         return _instance;
                     }
-                    var singleton = new GameObject();
-                    _instance = singleton.AddComponent<T>();
-                    singleton.name = "(singleton) "+ typeof(T);
 
-                    DontDestroyOnLoad(singleton);
+                    if (_instance == null)
+                    {
+                        GameObject singleton = new GameObject();
+                        _instance = singleton.AddComponent<T>();
+                        singleton.name = "(singleton) " + typeof(T);
 
-                    Debug.Log("[Singleton] An instance of " + typeof(T) + 
-                              " is needed in the scene, so '" + singleton +
-                              "' was created with DontDestroyOnLoad.");
+                        DontDestroyOnLoad(singleton);
 
+                        Debug.Log("[Singleton] An instance of " + typeof(T) +
+                                  " is needed in the scene, so '" + singleton +
+                                  "' was created with DontDestroyOnLoad.");
+                    }
                     return _instance;
                 }
             }
@@ -62,11 +67,14 @@ namespace Assets.Plugins
         ///   even after stopping playing the Application. Really bad!
         /// So, this was made to be sure we're not creating that buggy ghost object.
         /// </summary>
-        public void OnDestroy () {
+        public void OnDestroy()
+        {
             _applicationIsQuitting = true;
         }
 
-        public void Awake () {
+        [UsedImplicitly]
+        private void Awake ()
+        {
             _applicationIsQuitting = false;
         }
     }
