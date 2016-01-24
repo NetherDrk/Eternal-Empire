@@ -1,13 +1,11 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
+﻿namespace Assets.Scripts
+{
+    public class TechUnitUnlock : Tech {
 
-public class TechUnitUnlock : Tech {
+        public Unit UnitUnlocked;
 
-	[Header("Unit Unlock")]
-	public Unit unitUnlocked;
-
-	public override void Upgrade() {
-		unitUnlocked.unitUnlock ();
-	}
+        public override void Upgrade () {
+            UnitUnlocked.UnitUnlock ();
+        }
+    }
 }

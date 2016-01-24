@@ -1,102 +1,97 @@
-﻿using UnityEngine;
+﻿using Assets.Plugins;
+using Assets.Singletons_Scripts;
+using JetBrains.Annotations;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using Resources = Assets.Singletons_Scripts.Resources;
 
-public class Unit : MonoBehaviour {
+namespace Assets.Scripts
+{
+    public class Unit : MonoBehaviour {
 
-	private GameManager gameManager;
+        [Header("Game Objects")]
+        public GameObject UnitButton;
+        public Image UnitImage;
+        public Text UnitNameText;
+        public Text UnitResourceText;
+        public Text UnitCostText;
+        public Button BuyButton;
+        public Achievement[] AchievementsUnlocked;
 
-	[Header("Game Objects")]
-	public GameObject unitButton;
-	public Image unitImage;
-	public Text unitNameText;
-	public Text unitResourceText;
-	public Text unitCostText;
-	public Button buyButton;
-
-	[Header("Names and Sprites in each Tech Level")]
-	public string[] unitNames;
-	public Sprite[] unitSprites;
+        [Header("Names and Sprites in each Tech Level")]
+        public string[] UnitNames;
+        public Sprite[] UnitSprites;
 	
-	[Header("Initial Values")]
-	public double baseCost;
-	public float costGrowth;
-	public double resourcePerSecondPerUnit;
-	public ulong techLevel;
-	public ulong amount;
-	[HideInInspector]
-	public double cost;
-	[HideInInspector]
-	public double totalResourcePerSecond;
+        [Header("Initial Values")]
+        public double BaseCost;
+        public float CostGrowth;
+        public double ResourcePerSecondPerUnit;
+        public ulong TechLevel;
+        private ulong _amount;
+        private double _cost;
+        private double _totalResourcePerSecond;
 
-	void Start () {
-		gameManager = GameObject.Find ("GameManager").GetComponent<GameManager> ();
-		refreshLoad ();
-		refreshText ();
-	}
-	
-	void Update () {
-		gameManager.resourcesAmount += totalResourcePerSecond * Time.deltaTime;
-		gameManager.resourcesCollected += totalResourcePerSecond * Time.deltaTime;
+        [UsedImplicitly]
+        private void Start () {
+            Load ();
+            Refresh ();
+        }
 
-		if (buyButton.interactable) {
-			if (gameManager.resourcesAmount < cost) {
-				buyButton.interactable = false;
-			}
-		} else {
-			if (gameManager.resourcesAmount >= cost) {
-				buyButton.interactable = true;
-			}
-		}
-	}
+        [UsedImplicitly]
+        private void Update () {
+            Resources.Instance.AddResources (_totalResourcePerSecond * Time.deltaTime);
+            BuyButton.interactable = Resources.Instance.CheckResources (_cost);
+        }
 
-	string addName(string str) {
-		return gameObject.name + str;
-	}
+        private string AddName (string str) {
+            return gameObject.name + str;
+        }
 
-	public void unitUnlock() {
-		unitButton.SetActive (true);
-		fullRefresh ();
-	}
+        public void UnitUnlock () {
+            UnitButton.SetActive (true);
+            Refresh ();
+        }
 
-	public void unitUpgrade(double multiplyFactor) {
-		resourcePerSecondPerUnit *= multiplyFactor;
-		fullRefresh ();
-	}
+        public void UnitUpgrade (double multiplyFactor) {
+            ResourcePerSecondPerUnit *= multiplyFactor;
+            Refresh ();
+        }
 
-	public void unitTechUpgrade(double multiplyFactor) {
-		techLevel++;
-		unitImage.sprite = unitSprites [techLevel];
-		unitUpgrade (multiplyFactor);
-	}
+        public void UnitTechUpgrade (double multiplyFactor) {
+            TechLevel++;
+            UnitImage.sprite = UnitSprites [TechLevel];
+            UnitUpgrade (multiplyFactor);
+        }
 
-	void refreshLoad() {
-		amount = PlayerPrefs2.GetUlong (addName("Amount"), 0); 
-		unitImage.sprite = unitSprites [techLevel];
-	}
+        private void Load () {
+            _amount = PlayerPrefs2.GetUlong (AddName ("Amount"), 0); 
+            UnitImage.sprite = UnitSprites [TechLevel];
+        }
 
-	void refreshText() {
-		totalResourcePerSecond = resourcePerSecondPerUnit * amount;
-		cost = baseCost * Mathf.Pow (costGrowth, amount);
-		unitNameText.text = unitNames [techLevel] + " - " + gameManager.numberRound (amount);
-		unitResourceText.text = "R/sec: " + gameManager.numberRound (totalResourcePerSecond);
-		unitCostText.text = "Cost: " + gameManager.numberRound (cost);
-	}
+        private void Refresh () {
+            _totalResourcePerSecond = ResourcePerSecondPerUnit * _amount;
+            _cost = BaseCost * Mathf.Pow (CostGrowth, _amount);
+            UnitNameText.text = UnitNames [TechLevel] + " - " + NumberSuffixes.Instance.AddSuffixes (_amount);
+            UnitResourceText.text = "R/sec: " + NumberSuffixes.Instance.AddSuffixes (_totalResourcePerSecond);
+            UnitCostText.text = "Cost: " + NumberSuffixes.Instance.AddSuffixes (_cost);
+            foreach (Achievement achiev in AchievementsUnlocked) {
+                achiev.CheckAchievement ();
+            }
+        }
 
-	void refreshSave() {
-		PlayerPrefs2.SetUlong (addName("Amount"), amount);
-	}
+        private void Save () {
+            PlayerPrefs2.SetUlong (AddName ("Amount"), _amount);
+        }
 
-	public void fullRefresh() {
-		refreshText ();
-		refreshSave ();
-	}
+        public void BuyUnit () {
+            Resources.Instance.TakeResources (_cost);
+            _amount++;
+            Save ();
+            Refresh ();
+        }
 
-
-	public void buyUnit() {
-		gameManager.resourcesAmount -= cost;
-		amount++;
-		cost *= costGrowth;
-		fullRefresh ();
-	}
+        public ulong GetAmount () {
+            return _amount;
+        }
+    }
 }

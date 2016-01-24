@@ -1,14 +1,14 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
+﻿namespace Assets.Scripts
+{
+    public class TechUnitTechUpgrade : Tech
+    {
+        public double MultiplyFactor;
 
-public class TechUnitTechUpgrade : Tech {
+        public Unit UnitUpgraded;
 
-	[Header("Unit Upgrade")]
-	public Unit unitUpgraded;
-	public double multiplyFactor;
-
-	public override void Upgrade() {
-		unitUpgraded.unitTechUpgrade (multiplyFactor);
-	}
+        public override void Upgrade()
+        {
+            UnitUpgraded.UnitTechUpgrade(MultiplyFactor);
+        }
+    }
 }

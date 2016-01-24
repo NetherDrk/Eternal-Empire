@@ -1,75 +1,70 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using Assets.Plugins;
+using JetBrains.Annotations;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
+using Resources = Assets.Singletons_Scripts.Resources;
 
-public abstract class Tech : MonoBehaviour {
-	protected GameManager gameManager;
+namespace Assets.Scripts
+{
+    public abstract class Tech : MonoBehaviour {
+        [Header("Game Objects")]
+        public GameObject TechButton;
+        public Button BuyButton;
+        public Tech[] TechsToUnlock;
+        public Tech[] TechsUnlocked;
 
-	[Header("Game Objects")]
-	public GameObject techButton;
-	public Button buyButton;
-	public Tech[] techsToUnlock;
-	public Tech[] techsUnlocked;
+        [Header ("Upgrade Cost")]
+        public double Cost;
 
-	[Header ("Upgrade Cost")]
-	public double cost;
+        private bool _bought;
 
-	[HideInInspector]
-	public bool upgradeBought;
+        [UsedImplicitly]
+        private void Awake () {
+            _bought = PlayerPrefs2.GetBool (AddName ("Bought"), false);
+        }
 
-	void Awake () {
-		upgradeBought = PlayerPrefs2.GetBool (addName("Bought"), false);
-	}
+        [UsedImplicitly]
+        private void Start () {
+            if (CheckUnlock ()) {
+                TechButton.GetComponent<Button> ().interactable = !_bought;
+            }
+            if (_bought) {
+                Upgrade ();
+            }
+        }
 
-	void Start () {
-		gameManager = GameObject.Find ("GameManager").GetComponent<GameManager> ();		
-		if (checkUnlock()) {
-			techButton.GetComponent<Button> ().interactable = !upgradeBought;
-		}
-		if (upgradeBought) {
-			Upgrade ();
-		}
-	}
+        [UsedImplicitly]
+        private void Update () {
+            BuyButton.interactable = !_bought && Resources.Instance.CheckResources (Cost);
+        }
 
-	void Update () {
-		if (buyButton.interactable) {
-			if (gameManager.resourcesAmount < cost) {
-				buyButton.interactable = false;
-			}
-		} else {
-			if (gameManager.resourcesAmount >= cost) {
-				buyButton.interactable = true;
-			}
-		}
-	}
+        private string AddName (string str) {
+            return gameObject.name + str;
+        }
 
-	string addName(string str) {
-		return gameObject.name + str;
-	}
+        public bool CheckUnlock () {
+            var upgradesToUnlockBought = !TechsToUnlock.Any(tech => tech.WasntBought());
+            TechButton.SetActive (upgradesToUnlockBought);
+            return upgradesToUnlockBought;
+        }
 
-	public bool checkUnlock() {
-		bool upgradesToUnlockBought = true;
-		for (int i = 0; i < techsToUnlock.Length; i++) {
-			if (!techsToUnlock [i].upgradeBought) {
-				upgradesToUnlockBought = false;
-			}
-		}
-		if (upgradesToUnlockBought) {
-			techButton.SetActive (true);
-		}
-		return upgradesToUnlockBought;
-	}
+        public void BuyTech () {
+            Upgrade ();
+            Resources.Instance.TakeResources (Cost);
+            _bought = true;
+            TechButton.GetComponent<Button> ().interactable = !_bought;
+            foreach (var tech in TechsUnlocked) {
+                tech.CheckUnlock ();
+            }
+            PlayerPrefs2.SetBool (AddName ("Bought"), _bought);
+        }
 
-	public void buyTech() {
-		Upgrade ();
-		gameManager.resourcesAmount -= cost;
-		upgradeBought = true;
-		techButton.GetComponent<Button> ().interactable = !upgradeBought;
-		for (int i = 0; i < techsUnlocked.Length; i++) {
-			techsUnlocked [i].checkUnlock ();
-		}
-		PlayerPrefs2.SetBool (addName("Bought"), upgradeBought);
-	}
+        public abstract void Upgrade ();
 
-	public abstract void Upgrade ();
+        public bool WasntBought ()
+        {
+            return !_bought;
+        }
+    }
 }

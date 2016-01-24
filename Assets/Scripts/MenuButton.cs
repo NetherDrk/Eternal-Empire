@@ -1,13 +1,15 @@
-﻿using UnityEngine;
+﻿using Assets.Singletons_Scripts;
+using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-public class MenuButton : MonoBehaviour {
-	public GameObject menuToggled;
+namespace Assets.Scripts
+{
+    public class MenuButton : MonoBehaviour {
+        public GameObject MenuToggled;
 
-	public void buttonClicked() {
-		GameManager gameManager = GameObject.Find ("GameManager").GetComponent<GameManager> ();
-		Button thisButton = GetComponent<Button>();
-		gameManager.menuActive (menuToggled, thisButton);
-	}
+        public void ButtonClicked () {
+            Button thisButton = GetComponent<Button>();
+            MenuManager.Instance.MenuActive (MenuToggled, thisButton);
+        }
+    }
 }
